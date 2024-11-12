@@ -1,4 +1,4 @@
-﻿namespace GustoHub.API.Extensions
+namespace GustoHub.API.Extensions
 {
     using GustoHub.Data;
     using GustoHub.Data.Common;
@@ -6,6 +6,7 @@
     using GustoHub.Services.Services;
     using Microsoft.EntityFrameworkCore;
  
+
     public static class ServiceCollectionExtension
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
