@@ -1,4 +1,4 @@
-﻿namespace GustoHub.Data.ViewModels
+﻿namespace GustoHub.Data.ViewModels.POST
 {
     using System.ComponentModel.DataAnnotations;
 
