@@ -39,13 +39,13 @@
         public async Task<IEnumerable<GETEmployeeDto>> AllAsync()
         {
             List<GETEmployeeDto> employeeDtos = await repository.AllAsReadOnly<Employee>()
+                .Where(e => e.IsActive)
                 .Select(e => new GETEmployeeDto()
                 {
                     Id = e.Id.ToString(),
                     Name = e.Name,
                     Title = e.Title,
                     HireDate = e.HireDate.ToShortDateString(),
-                    IsActive = true,
                 })
                 .ToListAsync();
 
@@ -67,7 +67,6 @@
                 Name = employee.Name,
                 Title = employee.Title,
                 HireDate = employee.HireDate.ToShortDateString(),
-                IsActive = true,
             };
 
             return employeeDto;
@@ -83,7 +82,6 @@
                 Name = employee.Name,
                 Title = employee.Title,
                 HireDate = employee.HireDate.ToShortDateString(),
-                IsActive = true,
             };
 
             return employeeDto;
@@ -91,13 +89,11 @@
 
         public async Task<string> Remove(Guid employeeId)
         {
-            if (await ExistsByIdAsync(employeeId))
-            {
-                await repository.RemoveAsync<Employee>(employeeId);
-                await repository.SaveChangesAsync();
-                return "Employee removed successfully!";
-            }
-            return "Employee doesn't exists!";
+            Employee employee = await repository.GetByIdAsync<Employee>(employeeId);
+            employee.IsActive = false;
+
+            await repository.SaveChangesAsync();
+            return "Employee soft-removed successfully!";
         }
 
         public async Task<string> UpdateAsync(PUTEmployeeDto employeeDto, string employeeId)
