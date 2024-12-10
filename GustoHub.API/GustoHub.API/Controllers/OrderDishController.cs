@@ -60,7 +60,7 @@
                 return NotFound("Order not found!");
             }
             string responseMessage = await orderDishService.AddDishToOrderAsync(orderDishDto);
-            return Ok(responseMessage);
+            return Ok(new { message = responseMessage });
         }
         [HttpPut]
         public async Task<IActionResult> UpdateOrderDish(int orderId, int dishId, [FromBody] PUTOrderDishDto orderDishDto)
@@ -75,7 +75,7 @@
             }
 
             string responseMessage = await orderDishService.UpdateOrderDishAsync(orderId, dishId, orderDishDto);
-            return Ok(responseMessage);
+            return Ok(new { message = responseMessage });
         }
     }
 }

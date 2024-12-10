@@ -12,13 +12,13 @@ namespace GustoHub.Services.Interfaces
         Task<bool> ExistsByUsernameAsync(string username);
         Task<GETUserDto> GetByIdAsync(Guid userId);
 
-        Task NotifyAdminForVerification(User user, string adminEmail);
-
         //Task<IEnumerable<GETUserDto>> AllActiveAsync();
         //Task<IEnumerable<GETUserDto>> AllDeactivatedAsync();
         //Task<string> DeactivateAsync(Guid employeeId);
         //Task<string> ActivateAsync(Guid employeeId);
-        Task<string> UpdateAsync(PUTUserDto userDto, Guid userId);
+
+        Task<string> UpdateAsync(PUTVerifyUserDto userDto, Guid userId);
+        Task<string> VerifyAsync(PUTUserDto userDto, Guid userId);
         //Task<bool> IsUserActiveAsync(Guid userId);
     }
 

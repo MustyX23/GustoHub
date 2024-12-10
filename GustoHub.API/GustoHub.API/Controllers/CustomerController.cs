@@ -45,7 +45,7 @@
         public async Task<IActionResult> PostCustomer([FromBody] POSTCustomerDto customerDto)
         {
             string responseMessage = await customerService.AddAsync(customerDto);
-            return Ok(responseMessage);
+            return Ok(new { message = responseMessage });
         }
 
         [AuthorizeRole("Admin")]
@@ -58,7 +58,9 @@
                 return NotFound("Cutomer not found!");
             }
 
-            return Ok(await customerService.UpdateAsync(customer, id));
+            string responseMessage = await customerService.UpdateAsync(customer, id);
+
+            return Ok(new { message = responseMessage });
         }
 
         [AuthorizeRole("Admin")]
@@ -71,7 +73,9 @@
                 return NotFound("Cutomer not found!");
             }
 
-            return Ok(await customerService.Remove(Guid.Parse(id)));
+            string responseMessage = await customerService.Remove(Guid.Parse(id));
+
+            return Ok(new { message = responseMessage });
         }
     }
 }

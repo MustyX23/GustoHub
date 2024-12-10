@@ -29,7 +29,7 @@
             User user = new User()
             {
                 Username = userDto.Username,
-                Role = userDto.Role,
+                Role = "Default",
                 PasswordHash = BCrypt.HashPassword(userDto.Password),
                 CreatedAt = DateTime.Now,
                 IsVerified = false
@@ -77,20 +77,25 @@
             return userDto;
         }
 
-        public Task NotifyAdminForVerification(User user, string adminEmail)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<string> UpdateAsync(PUTUserDto userDto, Guid userId)
         {
             User? user = await repository.GetByIdAsync<User>(userId);
 
-            user.Role = userDto.Role;
             user.IsVerified = userDto.IsVerified;
+            user.Role = userDto.Role;
 
             await repository.SaveChangesAsync();
             return "User updated Successfully!";
+        }
+
+        public async Task<string> VerifyAsync(PUTVerifyUserDto userDto, Guid userId)
+        {
+            User? user = await repository.GetByIdAsync<User>(userId);
+
+            user.IsVerified = userDto.IsVerified;
+
+            await repository.SaveChangesAsync();
+            return "User verified Successfully!";
         }
     }
 }
