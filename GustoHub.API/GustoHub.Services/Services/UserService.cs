@@ -56,6 +56,11 @@
             return await repository.AllAsReadOnly<User>().AnyAsync(u => u.Id == userId);
         }
 
+        public async Task<bool> ExistsByUsernameAsync(string username)
+        {
+            return await repository.AllAsReadOnly<User>().AnyAsync(u => u.Username == username);
+        }
+
         public async Task<GETUserDto> GetByIdAsync(Guid userId)
         {
             User? user = await repository.GetByIdAsync<User>(userId);
@@ -66,9 +71,15 @@
                 Username = user.Username,
                 Role = user.Role,
                 CreatedAt = user.CreatedAt.ToShortDateString(),
+                IsVerified = user.IsVerified,
             };
 
             return userDto;
+        }
+
+        public Task NotifyAdminForVerification(User user, string adminEmail)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<string> UpdateAsync(PUTUserDto userDto, Guid userId)
@@ -76,6 +87,7 @@
             User? user = await repository.GetByIdAsync<User>(userId);
 
             user.Role = userDto.Role;
+            user.IsVerified = userDto.IsVerified;
 
             await repository.SaveChangesAsync();
             return "User updated Successfully!";

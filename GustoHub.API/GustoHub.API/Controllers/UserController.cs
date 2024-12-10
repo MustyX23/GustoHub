@@ -49,5 +49,39 @@
 
             return Ok(await userService.UpdateAsync(user, Guid.Parse(id)));
         }
+
+        [HttpGet("verify")]
+        public async Task<IActionResult> VerifyUser(Guid userId)
+        {
+            try
+            {
+                var user = await userService.GetByIdAsync(userId);
+                if (user == null)
+                {
+                    return NotFound(new { error = "User not found." });
+                }
+
+                if (user.IsVerified)
+                {
+                    return BadRequest(new { message = "User is already verified." });
+                }
+
+                var updateDto = new PUTUserDto
+                {
+                    Role = "User", 
+                    IsVerified = true 
+                };
+
+                await userService.UpdateAsync(updateDto, userId);
+
+                return Ok(new { message = "User successfully verified." });
+            }
+            catch (Exception ex)
+            {
+                // Log and handle errors appropriately
+                Console.WriteLine($"Error during user verification: {ex.Message}");
+                return StatusCode(500, new { error = "An error occurred while verifying the user." });
+            }
+        }
     }
 }
