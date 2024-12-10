@@ -17,8 +17,8 @@ namespace GustoHub.Services.Interfaces
         //Task<string> DeactivateAsync(Guid employeeId);
         //Task<string> ActivateAsync(Guid employeeId);
 
-        Task<string> UpdateAsync(PUTVerifyUserDto userDto, Guid userId);
-        Task<string> VerifyAsync(PUTUserDto userDto, Guid userId);
+        Task<string> UpdateAsync(PUTUserDto userDto, Guid userId);
+        Task<string> VerifyAsync(PUTVerifyUserDto userDto, Guid userId);
         //Task<bool> IsUserActiveAsync(Guid userId);
     }
 
