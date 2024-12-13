@@ -34,10 +34,10 @@
 
             if (dish == null)
             {
-                return NotFound("Dish not found!");
+                return NotFound( new {message = "Dish not found!" });
             }
 
-            return Ok(dishName);
+            return Ok(dish);
         }
 
         [AuthorizeRole("Admin")]

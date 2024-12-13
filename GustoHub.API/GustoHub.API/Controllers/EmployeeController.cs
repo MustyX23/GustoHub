@@ -44,10 +44,10 @@
 
             if (employee == null)
             {
-                return NotFound("Employee not found!");
+                return NotFound(new {message = "Employee not found!" });
             }
 
-            return Ok(employeeName);
+            return Ok(employee);
         }
 
         [AuthorizeRole("Admin")]

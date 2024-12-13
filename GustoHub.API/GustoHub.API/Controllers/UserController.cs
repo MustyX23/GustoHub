@@ -17,6 +17,8 @@
             this.userService = userService;
         }
 
+        [APIKeyRequired]
+        [AuthorizeRole("Admin")]
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetUserById(string userId)
         {
@@ -31,11 +33,21 @@
             {
                 return BadRequest("There is an existing user with that username. Please choose another.");
             }
-            string responseMessage = await userService.AddAsync(userDto);
 
-            return Ok(new { message = responseMessage });
+            try
+            {
+                string responseMessage = await userService.AddAsync(userDto);
+
+                return Ok(new { message = responseMessage + "An email is sent to an admin, to verify the user."});
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error during user verification: {e.Message}");
+                return StatusCode(500, new { error = "An error occurred while verifying the user." });
+            }
         }
 
+        [APIKeyRequired]
         [AuthorizeRole("Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(PUTUserDto user, string id)
@@ -45,7 +57,7 @@
                 return NotFound("User not found!");
             }
 
-            string responseMessage = await userService.VerifyAsync(user, Guid.Parse(id));
+            string responseMessage = await userService.UpdateAsync(user, Guid.Parse(id));
 
             return Ok(new {message = responseMessage});
         }
@@ -66,9 +78,9 @@
                     return BadRequest(new { message = "User is already verified." });
                 }
 
-                var updateDto = new PUTUserDto
+                var updateDto = new PUTVerifyUserDto
                 {
-                    IsVerified = true 
+                    IsVerified = true,
                 };
 
                 await userService.VerifyAsync(updateDto, userId);
