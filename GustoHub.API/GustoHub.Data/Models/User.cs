@@ -17,6 +17,7 @@ namespace GustoHub.Data.Models
 
         [Required]
         public DateTime CreatedAt { get; set; }
+         
 
         public bool IsVerified { get; set; }
 
